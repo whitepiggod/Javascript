@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* box-sizing: border-box; */
+        }
+
+        #outer {
+            position: relative;
+            width: 520px;
+            height: 333px;
+            margin: 100px auto;
+            background-color: yellowgreen;
+            padding: 10px 0;
+            overflow: hidden;
+        }
+
+        img {
+            height: 333px;
+            width: 500px;
+        }
+
+        #imgList {
+            position: absolute;
+            list-style: none;
+        }
+
+        #imgList li {
+            float: left;
+            margin: 0 10px;
+        }
+
+        #navDiv {
+            position: absolute;
+            top: 310px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #navDiv a {
+            float: left;
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            opacity: .5;
+            margin-right: 5px;
+            border-radius: 7.5px;
+        }
+
+
+
+        #navDiv a:hover {
+            background-color: black;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var imgList = document.getElementById("imgList");
+            var imgArr = document.getElementsByTagName("img");
+            imgList.style.width = 520 * imgArr.length + "px";
+            var index = 0;
+            var allA = document.getElementsByTagName("a");
+            allA[0].style.backgroundColor = "black";
+            // 点击超链接切换到指定的图片
+            for (var i = 0; i < allA.length; i++) {
+                allA[i].num = i;
+                allA[i].onclick = function () {
+                    clearInterval(timer);
+                    index = this.num;
+                    console.log("index:" + index);
+                    // imgList.style.left = -520 * index + "px";
+                    var current = getComputedStyle(imgList).left;
+                    //console.log(current);
+                    setA();
+
+                    move(imgList, "left", -520 * index, 20, function () {
+                        // 单击动画结束后重新轮播图
+                        autoChange();
+                    });
+
+                }
+            }
+            autoChange();
+
+
+
+            // function move(obj, target, speed) {
+            //     var timer;
+            //     var current = parseInt(getComputedStyle(obj).left);
+            //     //console.log("target:" + target);
+            //     //console.log("current:" + current);
+
+            //     if (current > target) {
+            //         timer = setInterval(function () {
+            //             current -= speed;
+            //             if (current <= target) {
+            //                 clearInterval(timer);
+            //             }
+            //             //console.log("aftercurrent:" + current);
+            //             obj.style.left = current + "px";
+            //         }, 30);
+            //     } else if (current < target) {
+            //         timer = setInterval(function () {
+            //             current += speed;
+            //             if (current >= target) {
+            //                 clearInterval(timer);
+            //             }
+            //             //console.log("aftercurrent:" + current);
+            //             obj.style.left = current + "px";
+            //         }, 30);
+            //     } else {
+            //         console.log("不变");
+            //     }
+            // }
+
+            /*尝试创建一个可以执行简单动画的函数：
+            参数：
+            obj：要执行动画的对象
+            attr：要执行动画的样式，比如：left top width
+            target：执行动画的目标位置
+            speed：移动的速度（正数向右移动）
+            callback:动画执行完毕，调用回调函数
+            */
+            function move(obj, attr, target, speed, callback) {
+                clearInterval(obj.timer);
+                var current = parseInt(getComputedStyle(obj)[attr]);
+                // 判断正负
+                if (current > target) {
+                    speed = -speed;
+                }
+                obj.timer = setInterval(function () {
+                    var oldValue = parseInt(getComputedStyle(obj)[attr]);
+                    var newValue = oldValue + speed;
+                    if (speed < 0 && newValue < target || speed > 0 && newValue > target) {
+                        newValue = target;
+                    }
+                    obj.style[attr] = newValue + "px";
+                    if (newValue == target) {
+                        clearInterval(obj.timer);
+                        //动画执行完毕，调用回调函数
+                        callback && callback();
+                    }
+                }, 30)
+            }
+
+            function setA() {
+                // 判断当前索引是否是最后一张图片
+                if (index >= imgArr.length - 1) {
+                    index = 0;
+                    imgList.style.left = 0;
+                }
+                for (var i = 0; i < allA.length; i++) {
+                    allA[i].style.backgroundColor = "";
+                }
+
+                allA[index].style.backgroundColor = "black";
+            }
+            //定义一个自动切换的定时器标识
+            var timer;
+
+            function autoChange() {
+                timer = setInterval(function () {
+                    //使索引自增
+                    index++;
+                    //判断index的值
+                    index %= imgArr.length;
+                    // 执行动画，切换图片
+
+                    move(imgList, "left", -520 * index, 20, function () {
+                        setA();
+                    });
+                }, 3000);
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <!-- 创建一个外部的div，来作为大的容器 -->
+    <div id="outer">
+        <!-- 创建一个ul，用来放置图片 -->
+        <ul id="imgList">
+            <li><img src="image_test/dog1.jpeg" alt=""></li>
+            <li><img src="image_test/dog2.jpeg" alt=""></li>
+            <li><img src="image_test/dog3.jpeg" alt=""></li>
+            <li><img src="image_test/dog4.jpg" alt=""></li>
+            <li><img src="image_test/dog5.jpeg" alt=""></li>
+            <li><img src="image_test/dog1.jpeg" alt=""></li>
+        </ul>
+        <!-- 创建按钮 -->
+        <div id="navDiv">
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+
+        </div>
+    </div>
+</body>
+
+</html>
