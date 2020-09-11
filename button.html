@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            var all = document.getElementById("all");
+            var arr = document.getElementsByClassName("sport");
+            all.onclick = function () {
+
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].checked = true;
+                }
+            };
+            var noAll = document.getElementById("noAll");
+            noAll.onclick = function () {
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].checked = false;
+                }
+            };
+            var back = document.getElementById("back");
+            back.onclick = function () {
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].checked = !arr[i].checked;
+                }
+            };
+            var select = document.getElementById("select");
+            for (var i = 0; i < arr.length; i++) {
+                arr[i].onclick = function () {
+                    select.checked = true;
+                    for (var j = 0; j < arr.length; j++) {
+                        if (!arr[j].checked) {
+                            select.checked = false;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    你爱好的运动是？<input type="checkbox" id="select">全选/全不选
+    </br>
+    <input type="checkbox" name="sports" class="sport">足球
+    <input type="checkbox" name="sports" class="sport">篮球
+    <input type="checkbox" name="sports" class="sport">羽毛球
+    <input type="checkbox" name="sports" class="sport">乒乓球
+    </br>
+    <button id="all">全&nbsp;&nbsp;选</button>
+    <button id="noAll">全不选</button>
+    <button id="back">反&nbsp;&nbsp;&nbsp;&nbsp;选</button>
+    <button>提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+</body>
+
+</html>

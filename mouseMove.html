@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        #box {
+            height: 400px;
+            width: 600px;
+            border: 1px solid black;
+            position: relative;
+        }
+
+        #showMsg {
+            height: 200px;
+            width: 400px;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var box = document.getElementById("box");
+            var showMsg = document.getElementById("showMsg");
+            box.onmousemove = function (e) {
+                showMsg.innerHTML = "x:" + e.clientX + "y:" + e.clientY;
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div id="box"></div>
+    <div id="showMsg"></div>
+</body>
+
+</html>
